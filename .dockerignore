@@ -1,0 +1,27 @@
+# .dockerignore
+
+# Ignore node_modules and npm debug log
+node_modules
+npm-debug.log
+
+# Ignore logs
+logs
+*.log
+
+# Ignore environment variables file
+.env
+
+# Ignore Docker-related files
+Dockerfile
+.dockerignore
+
+# Ignore Git-related files
+.git
+.gitignore
+
+# Ignore local development files
+*.md
+*.sublime-project
+*.sublime-workspace
+.vscode/
+.idea/
