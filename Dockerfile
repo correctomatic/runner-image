@@ -5,11 +5,15 @@ ARG DOCKER_VERSION=20.10.1
 ARG REPO_URL=https://github.com/correctomatic/correction-runner.git
 ARG REPO_BRANCH=master
 
+ENV NODE_ENV=production
+ENV REDIS_HOST=redis
+ENV REDIS_PORT=6379
+ENV LOG_LEVEL=info
+ENV LOG_FILE=/var/log/correctomatic/correctomatic.log
+ENV CONCURRENT_NOTIFIERS=10
+
 # Shared folder between containers
 ARG SHARED_FOLDER
-
-# ¿?
-# ENV SECRET_KEY=${SECRET_KEY}
 
 # Download and install Docker client binary
 RUN apk add --no-cache git curl
@@ -35,10 +39,11 @@ RUN git clone -b $REPO_BRANCH $REPO_URL correction-runner
 WORKDIR /home/node/app/correction-runner
 RUN npm install --only=production
 
-# Delayed start, to allow the Redis container to initialize
-# COPY --chown=node:node delayed_start.sh /
-# RUN chmod +x /delayed_start.sh
-# ENV DELAY_SECONDS=${DELAY_SECONDS}
+# Create log folder
+RUN mkdir -p /var/log/correctomatic && chown -R node:node /var/log/correctomatic
 
+# Run the corresponding correctomatic service
+COPY --chown=node:node entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+CMD ["/entrypoint.sh"]
 
-RUN echo "Oh dang look at that $NODE_VERSION"
