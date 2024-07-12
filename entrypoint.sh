@@ -1,9 +1,5 @@
 #!/bin/sh
 
-echo "Starting the Node.js process..."
-echo $PROCESS
-echo "-----------------"
-
 # Start your Node.js process
 case $PROCESS in
   "starter")

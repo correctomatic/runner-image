@@ -25,6 +25,9 @@ RUN curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-$DO
 RUN apk add curl vim \
     && rm -rf /var/cache/apk/*
 
+# Create log folder
+RUN mkdir -p /var/log/correctomatic && chown -R node:node /var/log/correctomatic
+
 USER node
 
 # Shared folder between containers
@@ -37,10 +40,7 @@ WORKDIR /home/node/app
 # Clone the repo and install dependencies
 RUN git clone -b $REPO_BRANCH $REPO_URL correction-runner
 WORKDIR /home/node/app/correction-runner
-RUN npm install --only=production
-
-# Create log folder
-RUN mkdir -p /var/log/correctomatic && chown -R node:node /var/log/correctomatic
+RUN npm install --omit=dev
 
 # Run the corresponding correctomatic service
 COPY --chown=node:node entrypoint.sh /
