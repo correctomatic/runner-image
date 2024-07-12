@@ -8,4 +8,5 @@ Configure modifying .env
 
 Build the image with `.build.sh`
 
-TO-DO
+Run with
+`docker run --rm correctomatic-runner`
