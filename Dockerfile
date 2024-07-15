@@ -4,10 +4,13 @@ FROM node:${NODE_VERSION}-alpine
 ARG DOCKER_VERSION=20.10.1
 ARG REPO_URL=https://github.com/correctomatic/correction-runner.git
 ARG REPO_BRANCH=master
+ARG DOCKER_GROUP_ID=999
 
 ENV NODE_ENV=production
 ENV REDIS_HOST=redis
 ENV REDIS_PORT=6379
+ENV DOCKER_OPTIONS=""
+ENV DOCKER_TIMEOUT=2000
 ENV LOG_LEVEL=info
 ENV LOG_FILE=/var/log/correctomatic/correctomatic.log
 ENV CONCURRENT_NOTIFIERS=10
@@ -21,25 +24,33 @@ RUN curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-$DO
     mv /tmp/docker/docker /usr/local/bin/docker && \
     rm -rf /tmp/docker
 
-# For debugging purposes
-RUN apk add curl vim \
-    && rm -rf /var/cache/apk/*
+
+# Give the node user access to the Docker socket on the host
+# This will create a group with the same ID as the Docker group on the host
+# and add the node user to that group. If the group already exists, it will
+# just add the user to the group.
+RUN if [ -n "${DOCKER_GROUP_ID}" ]; then \
+    if ! getent group ${DOCKER_GROUP_ID} >/dev/null; then \
+        addgroup -g ${DOCKER_GROUP_ID} docker; \
+    fi && \
+    adduser node `getent group ${DOCKER_GROUP_ID} | cut -d: -f1`; \
+fi
 
 # Create log folder
 RUN mkdir -p /var/log/correctomatic && chown -R node:node /var/log/correctomatic
 
+# App directory
+RUN mkdir -p /app && chown -R node:node /app
+
 USER node
+WORKDIR /app
 
 # Shared folder between containers
 # RUN mkdir -p ${SHARED_FOLDER}
 
-# App directory
-RUN mkdir -p /home/node/app
-WORKDIR /home/node/app
-
 # Clone the repo and install dependencies
 RUN git clone -b $REPO_BRANCH $REPO_URL correction-runner
-WORKDIR /home/node/app/correction-runner
+WORKDIR /app/correction-runner
 RUN npm install --omit=dev
 
 # Run the corresponding correctomatic service
