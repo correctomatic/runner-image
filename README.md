@@ -1,9 +1,8 @@
 # Runner image
 
-Docker image for running the correctomatic processes: starter, completer and notifier. It's the same image for the three processes.
+Docker image for running the correctomatic processes: starter, completer and notifier. It's the same image for the three processes. The source code for the correctomatic processes is in the [correction-runner](https://github.com/correctomatic/correction-runner) repository.
 
-The source code for the correctomatic processes is in the [correction-runner](https://github.com/correctomatic/correction-runner) repository.
-
+The image is available in [Docker Hub](https://hub.docker.com/r/correctomatic/runner).
 
 ## Using the image
 
