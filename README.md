@@ -4,6 +4,8 @@ Docker image for running the correctomatic processes: starter, completer and not
 
 The image is available in [Docker Hub](https://hub.docker.com/r/correctomatic/runner).
 
+**TO-DO**: configure access to a private registry
+
 ## Using the image
 
 There are two ways of configuring the image: with environment variables or with an `.env` file. In both cases, the variables are the same as defined in the correction-runner's [.env-example](https://github.com/correctomatic/correction-runner/blob/master/.env.example) file.
