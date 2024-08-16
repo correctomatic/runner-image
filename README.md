@@ -21,6 +21,8 @@ docker run --rm \
   correctomatic/runner
 ```
 
+The documentation for shuch `.env` file is in the [correction-runner repository](https://github.com/correctomatic/correction-runner/blob/master/.env.example), but are the same as the environment variables described below.
+
 ### Using environment variables
 
 The main variables you can pass are:
@@ -89,7 +91,7 @@ For that to work, the user running the container must have access to the docker 
 
 ## Build the image
 
-Build the image with `./build.sh`. All the parameters passed to the script will be passed to the `docker build` command. For example, to build the image with a custom tag. For example:
+Build the image with `./build.sh`. All the parameters passed to the script will be passed to the `docker build` command. For example, to build the image with a custom tag:
 
 ```bash
 ./build.sh --no-cache --tag correctomatic/runner:custom-tag
