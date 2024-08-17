@@ -49,8 +49,7 @@ WORKDIR /app
 # RUN mkdir -p ${SHARED_FOLDER}
 
 # Clone the repo and install dependencies
-RUN git clone -b $REPO_BRANCH $REPO_URL correction-runner
-WORKDIR /app/correction-runner
+RUN git clone -b $REPO_BRANCH $REPO_URL .
 RUN npm install --omit=dev
 
 # Run the corresponding correctomatic service
