@@ -5,6 +5,7 @@ ARG DOCKER_VERSION=20.10.1
 ARG REPO_URL=https://github.com/correctomatic/correction-runner.git
 ARG REPO_BRANCH=master
 ARG DOCKER_GROUP_ID=999
+ARG CERTS_DIR=/certs
 
 ENV NODE_ENV=production
 ENV REDIS_HOST=redis
@@ -14,9 +15,6 @@ ENV DOCKER_TIMEOUT=2000
 ENV LOG_LEVEL=info
 ENV LOG_FILE=/var/log/correctomatic/correctomatic.log
 ENV CONCURRENT_NOTIFIERS=10
-
-# Shared folder between containers
-ARG SHARED_FOLDER
 
 # Download and install Docker client binary
 RUN apk add --no-cache git curl
@@ -44,9 +42,6 @@ RUN mkdir -p /app && chown -R node:node /app
 
 USER node
 WORKDIR /app
-
-# Shared folder between containers
-# RUN mkdir -p ${SHARED_FOLDER}
 
 # Clone the repo and install dependencies
 RUN git clone -b $REPO_BRANCH $REPO_URL .
