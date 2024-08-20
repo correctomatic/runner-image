@@ -37,6 +37,9 @@ fi
 # Create log folder
 RUN mkdir -p /var/log/correctomatic && chown -R node:node /var/log/correctomatic
 
+# Certificates directory
+RUN mkdir -p ${CERTS_DIR} && chown -R node:node ${CERTS_DIR}
+
 # App directory
 RUN mkdir -p /app && chown -R node:node /app
 
