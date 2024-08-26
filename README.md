@@ -32,7 +32,12 @@ The main variables you can pass are:
 - `REDIS_PORT`: Port of the redis server
 - `REDIS_PASSWORD`: Password for the redis server
 - `DOCKER_OPTIONS`: JSON [Dockerode](https://github.com/apocas/dockerode) options for connecting to the docker server. If empty, will connecto to the local docker socket. See below for an example.
+- `DOCKER_OPTIONS_FILE`: Path to a file with the docker options. If `DOCKER_OPTIONS` is set, it will be ignored.
 - `DOCKER_TIMEOUT`: Timeout for the docker commands
+- `DOCKER_PULL`: If set to `true`, the container will pull the images before starting the tasks.
+- `DOCKER_PULL_TIMEOUT`: Timeout for the docker pull command.
+- `DOCKER_REPOSITORY_CREDENTIALS`: JSON object with the credentials for the docker repository. The key is the repository URL, and the value is an object with the `username` and `password` keys.
+- `DOCKER_REPOSITORY_CREDENTIALS_FILE`: Path to a file with the docker repository credentials. If `DOCKER_REPOSITORY_CREDENTIALS` is set, it will be merged with the contents of this file.
 - `CONCURRENT_NOTIFIERS`: Number of concurrent jobs sending notifications of completed tasks.
 
 There are also variables for debugging:
@@ -59,6 +64,14 @@ docker run --rm \
     "key": "/certs/key.pem"
   }' \
   -e DOCKER_TIMEOUT=5000 \
+  -e DOCKER_PULL=true \
+  -e DOCKER_PULL_TIMEOUT=10000 \
+  -e DOCKER_REPOSITORY_CREDENTIALS='{
+    "your.docker.registry.here": {
+      "username": "your-username",
+      "password": "your-password"
+    }
+  }' \
   -e NODE_ENV=value \
   -e LOG_LEVEL=info \
   -e LOG_FILE=/var/log/correctomatic/correctomatic.log \
@@ -67,7 +80,9 @@ docker run --rm \
   correctomatic/runner
 ```
 
-Here is an example of how to run the container with all the environment variables for connecting to your local docker server. Note that `DOCKER_OPTIONS` is not set, and that it bind mounts the local docker socket:
+Alternatively, you can use files with the docker options and the repository credentials.
+
+Here is an example of how to run the container with most of the environment variables for connecting to your local docker server. Note that `DOCKER_OPTIONS` is not set, and that it bind mounts the local docker socket:
 ```bash
 docker run --rm \
   -e PROCESS=starter \
@@ -75,6 +90,8 @@ docker run --rm \
   -e REDIS_PORT=6379 \
   -e REDIS_PASSWORD=value \
   -e DOCKER_TIMEOUT=5000 \
+  -e DOCKER_PULL=true \
+  -e DOCKER_PULL_TIMEOUT=10000 \
   -e NODE_ENV=value \
   -e LOG_LEVEL=info \
   -e LOG_FILE=/var/log/correctomatic/correctomatic.log \
