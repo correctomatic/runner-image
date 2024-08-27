@@ -52,7 +52,7 @@ WORKDIR /app
 
 # Clone the repo and install dependencies
 RUN git clone -b $REPO_BRANCH $REPO_URL .
-RUN npm install --omit=dev
+RUN npm install --omit=dev && npm cache clean --force
 
 # Run the corresponding correctomatic service
 COPY --chown=node:node entrypoint.sh /
