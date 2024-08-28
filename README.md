@@ -42,10 +42,9 @@ The main variables you can pass are:
 
 There are also variables for debugging:
 - `LOG_LEVEL`: Log level for the application.
-- `LOG_FILE`: File where the logs will be written. The path is from the container's point of view.
+- `LOG_FILE`: File where the logs will be written. The path is from the container's point of view. If empty, it will log to stdout.
 - `DONT_START_CONTAINER`: If set to S, the containers will not start. This is for debugging the completer.
 
-You have the default values in the Dockerfile.
 
 This is an example of how to run the container to connect to a remote docker server. You will need to mount the certificates in the container, and set the `DOCKER_OPTIONS` environment variable:
 

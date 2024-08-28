@@ -7,25 +7,11 @@ ARG REPO_BRANCH=master
 ARG DOCKER_GROUP_ID=999
 ARG CERTS_DIR=/certs
 
-ENV NODE_ENV=production
-ENV REDIS_HOST=redis
-ENV REDIS_PORT=6379
-ENV DOCKER_OPTIONS=""
-ENV DOCKER_OPTIONS_FILE=""
-ENV DOCKER_TIMEOUT=2000
-ENV DOCKER_PULL_TIMEOUT=10000
-ENV DOCKER_REPOSITORY_CREDENTIALS=""
-ENV DOCKER_REPOSITORY_CREDENTIALS_FILE=""
-ENV LOG_LEVEL=info
-ENV LOG_FILE=""
-ENV CONCURRENT_NOTIFIERS=10
-
 # Download and install Docker client binary
 RUN apk add --no-cache git curl
 RUN curl -fsSL https://download.docker.com/linux/static/stable/x86_64/docker-$DOCKER_VERSION.tgz | tar xz -C /tmp && \
     mv /tmp/docker/docker /usr/local/bin/docker && \
     rm -rf /tmp/docker
-
 
 # Give the node user access to the Docker socket on the host
 # This will create a group with the same ID as the Docker group on the host
